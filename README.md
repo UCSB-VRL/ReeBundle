@@ -26,4 +26,4 @@ The code has been tested only on python version 3.7.
 
 ## Dataset
 
-The code was tested on the publicly available ISMRM datset [dataset](https://doi.org/10.5281/zenodo.572345).
+The code was tested on the publicly available [ISMRM dataset](https://doi.org/10.5281/zenodo.572345).
