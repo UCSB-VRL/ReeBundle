@@ -10,19 +10,28 @@ import pickle
 from dipy.segment.clustering import QuickBundles
 from dipy.segment.metric import ResampleFeature
 from dipy.segment.metric import AveragePointwiseEuclideanMetric
-import os
 from dipy.tracking.streamline import Streamlines,set_number_of_points
 
+
 def distance(p1, p2):
+    """
+    Computes Euclidean Distance
+    Input: Two 3D points
+    Output: Euclidean Distance betweenthe points
+    """
     return np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 + (p1[2] - p2[2])**2)
       
-def constructRobustReeb(streamlines, eps, delta, tau):
+def constructRobustReeb(streamlines, eps, alpha, delta):
+    """
+    Reeb Graph Computation
+    Input: Streamline file and teh parameters
+    Output: Reeb Graph and Node location map assigning 3D coordinates to each node in the Reeb graph
+    """
     cluster_map = {}
     threshold = 1.5
     feature = ResampleFeature(nb_points=40)
     metric = AveragePointwiseEuclideanMetric(feature=feature) 
     qb = QuickBundles(threshold, metric=metric)
-#     qb = QuickBundles(threshold)
     clusters = qb.cluster(streamlines)
     centroid_trk = []
     for i in range(len(clusters)):
@@ -156,10 +165,7 @@ def constructRobustReeb(streamlines, eps, delta, tau):
 
         for stream_i in range(len(streamlines)):
             stream_list[stream_i][1] = True
-    
-    #Noise Handling tau represents how many trajectories in cluster
-    #Noise Handling delta represents how many points in clusters    
-#     print(cluster_map)
+
     count_trajectories = {}
     delete_cluster = set([])
     for stream_i in range(len(streamlines)):
@@ -170,15 +176,8 @@ def constructRobustReeb(streamlines, eps, delta, tau):
             else:
                 count_trajectories[uc] = cluster_map[stream_i]
     for (x,y) in count_trajectories.items():
-        if y <= tau :
-            delete_cluster.add(x) 
-#     for stream_i in range(len(streamlines)):
-#         unique_cluster = list(dict.fromkeys(assign_cluster[stream_i]))
-#         for uc in unique_cluster:        
-#             if assign_cluster[stream_i].count(uc) < delta:
-#                 delete_cluster.add(uc)
-#     print("Delete Cluster", delete_cluster)
-#     print("Assign Cluster", assign_cluster)            
+        if y <= delta :
+            delete_cluster.add(x)            
     for stream_i in range(len(streamlines)):
         for s_i in range(len(streamlines[stream_i])):
     #         print(assign_cluster[stream_i][s_i])
@@ -196,13 +195,7 @@ def constructRobustReeb(streamlines, eps, delta, tau):
             for s_i in range(len(streamlines[stream_i])-1, -1, -1):
                 if assign_cluster[stream_i][s_i] == -2:
                     assign_cluster[stream_i][s_i] = assign_cluster[stream_i][s_i+1]
-#     print("before", len(streamlines))
-#     print("del id", del_s_id)
-#     streamlines = [streamlines[i] for i in range(len(streamlines)) if i not in del_s_id]
 
-#     print("after",len(streamlines))
-#     assign_cluster = [assign_cluster[i] for i in range(len(assign_cluster)) if i not in del_s_id]
-#     print(assign_cluster)
     #Reeb Graph construction from bundles
     R = nx.Graph()
     G_nodes = nx.Graph()
@@ -310,9 +303,9 @@ def constructRobustReeb(streamlines, eps, delta, tau):
 #     print(node_map, H.edges.data())
     G_nodes = nx.Graph()
     count_del_edge = 0
-    # threshold on length of edge (delta) and edge weight (tau)
+    # threshold on length of edge (alpha) and edge weight (delta)
     for (n1, n2) in list(H.edges):
-        if (distance(node_loc_final[n1], node_loc_final[n2])) < delta:
+        if (distance(node_loc_final[n1], node_loc_final[n2])) < alpha:
             G_nodes.add_edge(n1,n2)            
             count_del_edge += 1
 #     print("here",count_del_edge)
@@ -330,7 +323,7 @@ def constructRobustReeb(streamlines, eps, delta, tau):
                     node_loc_final[node_id] = [node_loc_final[node_id][0]/2 + node_loc_final[c][0]/2, node_loc_final[node_id][1]/2 + node_loc_final[c][1]/2, node_loc_final[node_id][2]/2 + node_loc_final[c][2]/2]
             node_id += 1
     R = nx.relabel_nodes(H, node_map)
-#         if (edge_weight()< tau):
+#         if (edge_weight()< delta):
 #             H.remove_edge(n1, n2)
 #     R.remove_nodes_from(list(nx.isolates(R)))
 #     print("assign_cluster", assign_cluster)
@@ -338,5 +331,5 @@ def constructRobustReeb(streamlines, eps, delta, tau):
 #     print("count_trajectories",count_trajectories)
     R.remove_edges_from(nx.selfloop_edges(R))
     R.remove_nodes_from(list(nx.isolates(R)))
-    return R, node_loc_final, assign_cluster
+    return R, node_loc_final
         
