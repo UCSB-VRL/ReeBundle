@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import dipy.segment.bundles as dsb
 import nibabel as nib
 import numpy as np
