@@ -4,7 +4,7 @@ Please modify the path names to compute Reeb graphs for all the streamlines in t
 """
 import nibabel as nib
 import os
-import robustReebConstruction_avg_loc_qb as rc
+import robustReebConstruction as rc
 import networkx as nx
 import pickle
 #path name for CC files
