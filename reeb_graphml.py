@@ -18,7 +18,7 @@ for file in trk_files:
         eps =2.5
         alpha = 3
         delta = 5
-        H, node_loc,cluster_edge = rc.constructRobustReeb(cc_streamlines.streamlines, eps, alpha, delta)
+        H, node_loc = rc.constructRobustReeb(cc_streamlines.streamlines, eps, alpha, delta)
         #write H
         nx.write_gpickle(H, trk_file_path+"H_CC_ref_"+file.split("_")[0]+"_"+file.split("_")[1]+".gpickle")
         #save node_loc dict
