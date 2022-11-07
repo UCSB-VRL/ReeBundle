@@ -23,6 +23,8 @@ The code has been tested only on python version 3.7.
 
 ## Example usage
 
+[Visualize an example Reeb graph in 3D.](https://drive.google.com/file/d/1Z2s1AzeHkvws5br42dd8k7ls69_Uuieu/view)
+
 1. For ISMRM Dataset, sample .trk files are included in teh SampleISMRMData folder. Run the jupyter notebook "ReebGraphForISMRMBundles" to load the .trk files and construct the Reeb graphs for CA and CP bundle tracts. For ISMRM, ReeBundle detects and handles the morphology of the white matter tract configurations due to branching and local ambiguities in complicated bundle tracts like anterior and posterior commissures. ISMRM dataset helps in the qualitative validation of the ReeBundle method. <br>
 
 2. For the CRASH Dataset, sample .gpickle files for Reeb graphs can be found in SampleISMRMData. Run the jupyter notebook "TopologicalDistanceForCRASH" to load .gpickle files and compute topological distances. Finally, creates the heatmap for CC bundle as presented in the paper [2]. In the analysis of the bundle tracts of white matter fibers in the CRASH dataset, the Reeb graphs of a given subject are similar across eight scan repetitions acquired weeks apart, whereas they differ from other subjects. CRASH dataset helps in the quantitative validation of the Reeb graph as a fingerprint for the bundle tract.  <br>
