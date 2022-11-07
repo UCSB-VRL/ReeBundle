@@ -1,0 +1,9 @@
+dipy
+matplotlib
+networkx
+nibabel
+numpy
+pandas
+pickle
+math
+seaborn
