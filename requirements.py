@@ -7,3 +7,4 @@ pandas
 pickle
 math
 seaborn
+jupyterlab
