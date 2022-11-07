@@ -1,4 +1,4 @@
-dipy
+dipy==1.4.1
 matplotlib
 networkx
 nibabel

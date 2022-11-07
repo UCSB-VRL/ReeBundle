@@ -21,8 +21,7 @@ The code has been tested only on python version 3.7.
 
 ## Example usage
 
-
- An example .trk file has been included in the Data directory.
+1. For ISMRM Dataset, sample .trk files are included in teh SampleISMRMData folder. Run the jupyter notebook "ReebGraphForISMRMBundles" to load the .trk files and construct the Reeb graphs for CA and CP bundle tracts. For ISMRM, ReeBundle detects and handles the morphology of the white matter tract configurations due to branching and local ambiguities in complicated bundle tracts like anterior and posterior commissures. ISMRM dataset helps in the qualitative validation of the ReeBundle method.
 
 ## Dataset
 
