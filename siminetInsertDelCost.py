@@ -52,7 +52,7 @@ def annotate_merge(fn):
     return wrapped
             
 
-def max_cost_score(node_score, edge_weight_score, edge_dist_score, gcmp, gref, eps, delta, tau):
+def max_cost_score(node_score, edge_weight_score, edge_dist_score, gcmp, gref, eps, alpha, delta):
     """
     Scoring function that normalizes the sum of the node score and edge score with
     the maximum possible such score  -- which is the sum of maximum insertion cost and maximum deletion cost
@@ -67,8 +67,8 @@ def max_cost_score(node_score, edge_weight_score, edge_dist_score, gcmp, gref, e
     # Maximum edge costs
     max_edge_ins_cost = sum(attrs["weight"] for (_,_,attrs) in gref.edges(data=True))
     max_edge_del_cost = sum(attrs["weight"] for (_,_,attrs) in gcmp.edges(data=True))
-    #max_edge_ins_cost = 2*(delta+tau)*len(gref.edges)
-    #max_edge_del_cost = 2*(delta+tau)*len(gcmp.edges)
+    #max_edge_ins_cost = 2*(alpha+delta)*len(gref.edges)
+    #max_edge_del_cost = 2*(alpha+delta)*len(gcmp.edges)
 
 
     max_score   = max_node_ins_cost + max_node_del_cost + max_edge_ins_cost + max_edge_del_cost
@@ -78,7 +78,7 @@ def max_cost_score(node_score, edge_weight_score, edge_dist_score, gcmp, gref, e
     return given_score / max_score
 
 #@annotate_merge
-def distance(gcmp, gref, eps, delta, tau, sub_rad=None , scoring_func=None, transform=False, ins_cost = None):
+def distance(gcmp, gref, eps, alpha, delta, sub_rad=None , scoring_func=None, transform=False, ins_cost = None):
     """
     Intakes two graphs, gcmp and gref, and computes the node and edge distances b/w them as per the Siminet algorithm.
     The graph is expected to be labeled, with the nodes having an attribute 'position' (corresponds to spatial position)
@@ -95,7 +95,7 @@ def distance(gcmp, gref, eps, delta, tau, sub_rad=None , scoring_func=None, tran
     #eps = 7*eps
     
     if scoring_func is None: # scoring function, using the node/edge scores and the two graphs
-        scoring_func = lambda n,ew, ed, gc, gr, eps, delta, tau: (n,ew, ed) # default just returns back the node and edge scores
+        scoring_func = lambda n,ew, ed, gc, gr, eps, alpha, delta: (n,ew, ed) # default just returns back the node and edge scores
 
     if sub_rad is None:
         sub_rad = 2*eps
@@ -214,17 +214,17 @@ def distance(gcmp, gref, eps, delta, tau, sub_rad=None , scoring_func=None, tran
         raw_wt_diff   = abs(ref_data["weight"] - wt)
         raw_dist_diff = abs(ref_data["distance"] - edist)
         
-        edge_weight_score += raw_wt_diff if raw_wt_diff > (tau/len(gref.edges)) else 0
-        edge_dist_score   += raw_dist_diff if raw_dist_diff > delta else 0
+        edge_weight_score += raw_wt_diff if raw_wt_diff > (delta/len(gref.edges)) else 0
+        edge_dist_score   += raw_dist_diff if raw_dist_diff > alpha else 0
         
-        #edge_weight_score += np.median([delta, 10*delta, raw_wt_diff])
-        #edge_dist_score   += np.median([tau, 10*tau, raw_dist_diff])
+        #edge_weight_score += np.median([alpha, 10*alpha, raw_wt_diff])
+        #edge_dist_score   += np.median([delta, 10*delta, raw_dist_diff])
         #print(edge_weight_score, edge_dist_score)
         
-        #if sc < delta:
+        #if sc < alpha:
         #    sc = 0
-        #elif sc > 2*delta:
-        #    sc = 2*delta
+        #elif sc > 2*alpha:
+        #    sc = 2*alpha
             
         #edge_weight_score += sc
         
@@ -247,10 +247,9 @@ def distance(gcmp, gref, eps, delta, tau, sub_rad=None , scoring_func=None, tran
     
     #plt.figure()
     #plt.hist(np.array(distances), bins=30)
-    #plt.show()
-        
-    #final_score = scoring_func(node_score, edge_weight_score, gcmp, gref, eps, delta, tau)
-    final_score = scoring_func(node_score, edge_weight_score, edge_dist_score, gcmp, gref, eps, delta, tau)
+    #plt.show()   
+    #final_score = scoring_func(node_score, edge_weight_score, gcmp, gref, eps, alpha, delta)
+    final_score = scoring_func(node_score, edge_weight_score, edge_dist_score, gcmp, gref, eps, alpha, delta)
     #print(f"siminet {final_score=}")
         
     if transform:
