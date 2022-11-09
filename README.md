@@ -11,7 +11,7 @@ The system was employed for our research presented in [1], where we propose a no
 
 [1] Shailja, S., Angela Zhang, and B. S. Manjunath. "A computational geometry approach for modeling neuronal fiber pathways." International Conference on Medical Image Computing and Computer-Assisted Intervention. Springer, Cham, 2021.
 
-[2] Shailja, S., Bhagavatula, V., Cieslak, M., Vettel, J., Grafton, S. T., and B. S. Manjunath. "ReeBundle: a method for topological modeling of white matter pathways. " Submitted to the NeuroImage Journal, 2022.
+[2] Shailja, S., Bhagavatula, V., Cieslak, M., Vettel, J., Grafton, S. T., and B. S. Manjunath. "ReeBundle: a method for topological modeling of white matter pathways. " Submitted to the Journal, 2022.
 
 ## Requirements
 
