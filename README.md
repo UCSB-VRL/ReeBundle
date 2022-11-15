@@ -4,6 +4,7 @@ Given the trajectories of neuronal fiber pathways, we model the evolution of tra
 fingerprint) and calculate their point correspondence in the 3D brain space. We show that our model can handle the presence of improbable streamlines, as commonly produced by tractography algorithms. Three key parameters in our method capture the geometry and topology of the streamlines: (i) $\epsilon$ -- the distance between a pair of streamlines in a bundle that defines its sparsity; (ii) $\alpha$ -- the spatial length of the bundle that introduces persistence; and (iii) $\delta$ -- the bundle thickness. Together, these parameters control the granularity of the model to provide a compact signature of the tracts and their underlying anatomical structure.
 
 For more details about our algorithm, please refer to our [paper](https://www.biorxiv.org/content/10.1101/2022.03.11.482601v1.abstract).
+<img src="overview.jpg" alt="overview" title="Overview">
 
 ## Citation
 
