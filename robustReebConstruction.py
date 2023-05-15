@@ -29,9 +29,9 @@ def constructRobustReeb(streamlines, eps, alpha, delta):
     """
     cluster_map = {}
     threshold = 1.5
-#     feature = ResampleFeature(nb_points=40)
-#     metric = AveragePointwiseEuclideanMetric(feature=feature) 
-#     qb = QuickBundles(threshold, metric=metric)
+    feature = ResampleFeature(nb_points=40)
+    metric = AveragePointwiseEuclideanMetric(feature=feature) 
+    qb = QuickBundles(threshold, metric=metric)
     qb = QuickBundles(threshold)
     clusters = qb.cluster(streamlines)
     centroid_trk = []
