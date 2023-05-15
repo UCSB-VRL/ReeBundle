@@ -8,7 +8,7 @@ import numpy as np
 import nibabel as nib
 import pickle
 from dipy.segment.clustering import QuickBundles
-from dipy.segment.metric import ResampleFeature
+from dipy.segment.featurespeed import ResampleFeature
 from dipy.segment.metric import AveragePointwiseEuclideanMetric
 from dipy.tracking.streamline import Streamlines,set_number_of_points
 
@@ -29,9 +29,10 @@ def constructRobustReeb(streamlines, eps, alpha, delta):
     """
     cluster_map = {}
     threshold = 1.5
-    feature = ResampleFeature(nb_points=40)
-    metric = AveragePointwiseEuclideanMetric(feature=feature) 
-    qb = QuickBundles(threshold, metric=metric)
+#     feature = ResampleFeature(nb_points=40)
+#     metric = AveragePointwiseEuclideanMetric(feature=feature) 
+#     qb = QuickBundles(threshold, metric=metric)
+    qb = QuickBundles(threshold)
     clusters = qb.cluster(streamlines)
     centroid_trk = []
     for i in range(len(clusters)):
